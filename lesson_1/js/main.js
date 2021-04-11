@@ -20,7 +20,7 @@ const renderProduct = (item = { id: 0, title: "Good", price: 10, img: "https://p
 
 const catalogInit = (list = [{ title: "Good", price: 10 }]) => {
     const productList = list.map((item) => renderProduct(item));
-    console.log(productList);
+    //console.log(productList);
     let prodContainer = document.querySelector(".products");
     productList.forEach((el) => {
         prodContainer.insertAdjacentHTML("beforeend", el);

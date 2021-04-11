@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Object Oriented Promgramming</title>
+</head>
+<body>
+<script>
+"use strict";
+
+// создание класса в JS
+function Person (name = "", yoBirth = 1995) {
+    this.name = name;
+    this.yoBirth = yoBirth;
+    // создавать метод внутри функции-класса нельзя, т.к. при каждом создании
+    // объекта будет отводиться память под каждый метод
+    // this.getAge = function() {
+    //     return new Date().getFullYear() - this.yoBirth;
+    // }
+};
+
+// создание методов класса
+// все методы в JS прописываются исключительно через прототипы
+Person.prototype.getAge = function() {
+    return new Date().getFullYear() - this.yoBirth;
+    //return new Date().getFullYear() + this.yoBirth;
+};
+
+// Создание класса наследника
+function Teacher (name, yoBirth, subject = "Literature") {
+    // Вызов класса родителя с методом CALL для возможности передачи значения this
+    // и другими аргументами,
+    // затем передаем контекст и те свойства, которые д.б. в классе родителе
+    Person.call(this, name, yoBirth);
+    // далее как обычно в дочернем классе свойства привязываем
+    this.subject = subject;
+};
+
+// Попытка переноса методов в дочерний класс
+
+// Teacher.prototype = Person.prototype; // -- так нельзя, т.к. прототип передался по ссылке!
+// при таком подходе, если вносить изменения в метод дочернего класса, 
+// эти изменения будут отражаться и в методе родительского класса
+
+// CREATE создает новый объект с указанным прототипом и свойствами
+// другими словами "копирует" методы в дочерний класс
+Teacher.prototype = Object.create(Person.prototype);
+// при такой записи происходит уничтожение конструктора дочернего класса
+// т.к. прототип затирает его
+// поэтому конструктор нужно вернуть
+// т.е. записать в конструктор прототипа дочернего класса 
+// снова, объявленную выше, функцию дочернего класса без её вызова
+Teacher.prototype.constructor = Teacher;
+
+
+let john = new Person("John", 1990);
+
+let ann = new Teacher("Ann");
+
+console.log(john);
+console.log(john.getAge());
+
+console.log(ann);
+console.log(ann.getAge());
+
+</script>
+</body>
+</html>
